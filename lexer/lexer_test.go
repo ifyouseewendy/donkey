@@ -38,15 +38,16 @@ var testCases = []struct {
 		},
 	},
 	{
-		input: `let five = 5;
-    let ten = 10;
+		input: `
+            let five = 5;
+            let ten = 10;
 
-    let add = fn(x, y) {
-      x + y;
-    };
+            let add = fn(x, y) {
+              x + y;
+            };
 
-    let result = add(five, ten);
-    `,
+            let result = add(five, ten);
+        `,
 		tests: []testsType{
 			{token.LET, "let"},
 			{token.IDENT, "five"},
@@ -87,6 +88,7 @@ var testCases = []struct {
 			{token.EOF, ""},
 		},
 	},
+	// INT
 	{
 		input: "let five = 05",
 		tests: []testsType{
@@ -94,6 +96,76 @@ var testCases = []struct {
 			{token.IDENT, "five"},
 			{token.ASSIGN, "="},
 			{token.ILLEGAL, "05"},
+		},
+	},
+	// ! - / * > <
+	{
+		input: `
+            !-/*5;
+            5 < 10 > 5;
+        `,
+		tests: []testsType{
+			{token.BANG, "!"},
+			{token.MINUS, "-"},
+			{token.SLASH, "/"},
+			{token.ASTERISK, "*"},
+			{token.INT, "5"},
+			{token.SEMICOLON, ";"},
+			{token.INT, "5"},
+			{token.LT, "<"},
+			{token.INT, "10"},
+			{token.GT, ">"},
+			{token.INT, "5"},
+			{token.SEMICOLON, ";"},
+			{token.EOF, ""},
+		},
+	},
+	// if else return true false
+	{
+		input: `
+            if (5 < 10) {
+                return true;
+            } else {
+                return false;
+            }
+        `,
+		tests: []testsType{
+			{token.IF, "if"},
+			{token.LPAREN, "("},
+			{token.INT, "5"},
+			{token.LT, "<"},
+			{token.INT, "10"},
+			{token.RPAREN, ")"},
+			{token.LBRACE, "{"},
+			{token.RETURN, "return"},
+			{token.TRUE, "true"},
+			{token.SEMICOLON, ";"},
+			{token.RBRACE, "}"},
+			{token.ELSE, "else"},
+			{token.LBRACE, "{"},
+			{token.RETURN, "return"},
+			{token.FALSE, "false"},
+			{token.SEMICOLON, ";"},
+			{token.RBRACE, "}"},
+			{token.EOF, ""},
+		},
+	},
+	// == !=
+	{
+		input: `
+            10 == 10;
+            10 != 9;
+        `,
+		tests: []testsType{
+			{token.INT, "10"},
+			{token.EQ, "=="},
+			{token.INT, "10"},
+			{token.SEMICOLON, ";"},
+			{token.INT, "10"},
+			{token.NOT_EQ, "!="},
+			{token.INT, "9"},
+			{token.SEMICOLON, ";"},
+			{token.EOF, ""},
 		},
 	},
 }

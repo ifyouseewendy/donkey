@@ -8,11 +8,13 @@ A language with a simple feature set following [Writing An Interpreter In Go](ht
 
 Supported tokens
 
-+ Operators: `=`, `+`
++ Operators: `=`, `+`, `-`, `*`, `/`, `!`, `<`, `>`, `==`, `!=`
 + Delimiters: `,`, `;`, `(`, `)`, `{`, `}`
 + Identifiers:
-  - type: integer, like 1, 2, 3
-  - keywords: `let`, `fn`
-  - other literals
+  - keywords: `let`, `fn`, `if`, `else`, `return`
+  - literal integer, `0`, `123`
+  - literal boolean, `true`, `false`
+  - literal identifiers: `foo`, `bar`
 + EOF
-+ Illegals
++ Skip whitespace, ` `, `\t`, `\n`, `\r`
++ Mark errored token as Illegal

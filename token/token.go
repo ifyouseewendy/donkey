@@ -3,16 +3,30 @@ package token
 import "strconv"
 
 const (
-	ILLEGAL = "ILLEGAL"
-	EOF     = "EOF"
-
 	// Identifiers + literals
 	IDENT = "IDENT"
 	INT   = "INT"
+	TRUE  = "TRUE"
+	FALSE = "FALSE"
+
+	// Keywords
+	FUNCTION = "FUNCTION"
+	LET      = "LET"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 
 	// Operators
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	SLASH    = "/"
+	ASTERISK = "*"
+	LT       = "<"
+	GT       = ">"
+	EQ       = "=="
+	NOT_EQ   = "!="
 
 	// Delimiters
 	COMMA     = ","
@@ -23,9 +37,8 @@ const (
 	LBRACE = "{"
 	RBRACE = "}"
 
-	// Keywords
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
+	EOF     = "EOF"
+	ILLEGAL = "ILLEGAL"
 )
 
 type TokenType string
@@ -55,6 +68,11 @@ func ParseDigit(literal string) TokenType {
 }
 
 var keywords = map[string]TokenType{
-	"let": LET,
-	"fn":  FUNCTION,
+	"let":    LET,
+	"fn":     FUNCTION,
+	"if":     IF,
+	"else":   ELSE,
+	"return": RETURN,
+	"true":   TRUE,
+	"false":  FALSE,
 }
