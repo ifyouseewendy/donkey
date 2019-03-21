@@ -12,6 +12,7 @@ type Statement interface {
 	statementNode()
 }
 
+// In the Monkey programming language everything besides let and return statements is an expression.
 type Expression interface {
 	Node
 	expressionNode()
@@ -46,3 +47,11 @@ type Identifier struct {
 
 func (i *Identifier) expressionNode()      {}
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
+
+type ReturnStatement struct {
+	Token       token.Token
+	ReturnValue Expression
+}
+
+func (rs *ReturnStatement) statementNode()       {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
