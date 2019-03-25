@@ -16,12 +16,12 @@ func TestLetStatement(t *testing.T) {
 	l := lexer.New(input)
 	p := New(l)
 
-	program := p.ParserProgram()
+	program := p.ParseProgram()
 
 	checkParserErrors(t, p)
 
 	if program == nil {
-		t.Fatalf("ParserProgram() returned nil")
+		t.Fatalf("ParseProgram() returned nil")
 	}
 	if len(program.Statements) != 3 {
 		t.Fatalf("program.Statements does not contain 3 statements. got %d", len(program.Statements))
@@ -53,12 +53,12 @@ func TestReturnStatement(t *testing.T) {
 	l := lexer.New(input)
 	p := New(l)
 
-	program := p.ParserProgram()
+	program := p.ParseProgram()
 
 	checkParserErrors(t, p)
 
 	if program == nil {
-		t.Fatalf("ParserProgram() returned nil")
+		t.Fatalf("ParseProgram() returned nil")
 	}
 	if len(program.Statements) != 3 {
 		t.Fatalf("program.Statements does not contain 3 statements. got %d", len(program.Statements))

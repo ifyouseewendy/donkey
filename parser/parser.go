@@ -7,6 +7,7 @@ import (
 	"fmt"
 )
 
+// Parser takes a Lexer, processes the token streams and assmebles an AST
 type Parser struct {
 	l *lexer.Lexer
 
@@ -16,6 +17,7 @@ type Parser struct {
 	errors []string
 }
 
+// New is the initializer for Parser
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l, errors: []string{}}
 
@@ -25,16 +27,19 @@ func New(l *lexer.Lexer) *Parser {
 	return p
 }
 
+// Errors returns a list of errors during the process of parsing
 func (p *Parser) Errors() []string {
 	return p.errors
 }
 
+// nextToken serves as a enumerable method returning a stream of tokens
 func (p *Parser) nextToken() {
 	p.curToken = p.peekToken
 	p.peekToken = p.l.NextToken()
 }
 
-func (p *Parser) ParserProgram() *ast.Program {
+// ParseProgram is the main entry for Parser
+func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
 
