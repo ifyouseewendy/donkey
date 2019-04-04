@@ -205,8 +205,16 @@ func (p *Parser) curPrecedence() int {
 	return LOWEST
 }
 
+// To parse an expression, we start with a one-time check on prefix and a loop over infix parsing.
+// When parseExpression is called the value of precedence stands for the current "right-binding power"
+// of the current parseExpression invocation. The higher it is, the more tokens/operators/operands
+// to the right of the current expressions (the future peek tokens) can we "bind" to it.
+//
+// For example,
+//
+//   1 + 2 + 3 => ((1 + 2) + 3)
+//   1 + 2 * 3 => (1 + (2 * 3))
 func (p *Parser) parseExpression(precedence int) ast.Expression {
-	// fmt.Printf("current token is %q with precedence %d", p.curToken.Literal, precedence)
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
 		p.noPrefixParseFnError(p.curToken.Type)
