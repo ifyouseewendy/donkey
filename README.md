@@ -2,22 +2,47 @@
 
 A language with a simple feature set following [Writing An Interpreter In Go](https://interpreterbook.com/)
 
-## Notes
+## Lexer
 
-### Lexer
+<details>
+<summary>details</summary>
+<p>
 
-+ Operators: `=`, `+`, `-`, `*`, `/`, `!`, `<`, `>`, `==`, `!=`
-+ Delimiters: `,`, `;`, `(`, `)`, `{`, `}`
-+ Identifiers:
-  - keywords: `let`, `fn`, `if`, `else`, `return`
-  - literal integer, `0`, `123`
-  - literal boolean, `true`, `false`
-  - literal identifiers: `foo`, `bar`
-+ EOF
-+ Skip whitespace, ` `, `\t`, `\n`, `\r`
-+ Mark errored token as Illegal
+|            | Token      | Example    | Precedence |
+|------------|------------|------------|------------|
+| Identifier | INT        | 1          |            |
+|            | TRUE/FALSE | true/false |            |
+|            | IDENT      | foo        |            |
+| Keyword    | LET        | let        |            |
+|            | FUNCTION   | fn         | 6          |
+|            | RETURN     | return     |            |
+|            | IF         | if         |            |
+|            | ELSE       | else       |            |
+| Operator   | ASSIGN     | =          |            |
+|            | EQ         | ==         | 1          |
+|            | NOT_EQ     | !=         | 1          |
+|            | LT         | <          | 2          |
+|            | GT         | >          | 2          |
+|            | PLUS       | +          | 3          |
+|            | MINUS      | -          | i3, p5     |
+|            | ASTERISK   | *          | 4          |
+|            | SLASH      | /          | 4          |
+|            | BANG       | !          | p5         |
+| Delimiter  | COMMA      | ,          |            |
+|            | SEMICOLON  | ;          |            |
+|            | LPAREN     | (          |            |
+|            | RPAREN     | )          |            |
+|            | LBRACE     | {          |            |
+|            | RBRACE     | }          |            |
+| SPECIAL    | EOF        | \EOF       |            |
+|            | ILLEGAL    |            |            |
 
-### Parser
+* Skip whitespace, ` `, `\t`, `\n`, `\r`
+
+</p>
+</details>
+
+## Parser
 
 > There are two main strategies when parsing a programming language: top-down parsing or bottom-up parsing. For example, "recursive descent parsing", "Early parsing" or "predictive parsing" are all variations of top down pang. The difference between top down and bottom up parsers is that the former starts with constructing root node of the AST and then descends while the latter does it the other way around.
 The parser we are going to write is a recursive descent parser. And in particular, it's a "top down operator precedence" parser, sometimes called "Pratt parser", after its inventor Vaughan Pratt. A recursive descent parser, which works from the top down, is often recommended for newcomers to parsing, since it closely mirrors the way we think about ASTs and their construction.
@@ -26,7 +51,7 @@ After lexical check, parser's job is to do syntax check, which takes the token s
 
 Parser is a list of statements. In the Monkey programming language, every statement besides let and return statements is an expression.
 
-#### AST
+### AST
 
 In Monkey, a program is a series of statements. Every statements besides let and return statements are expression statements.
 An expression statement is not really a distinct statement; it's only a wrapper which consists solely of one expression.
@@ -49,7 +74,7 @@ return 5;
 x + 10;
 ```
 
-#### Expression
+### Expression
 
 + identifiers
   - integer literal
@@ -64,7 +89,7 @@ x + 10;
   - function literal
   - function call
 
-##### Identifiers
+### Identifiers
 
 ```
 5
@@ -72,7 +97,7 @@ true
 foo
 ```
 
-##### Operators prefix
+### Operators prefix
 
 Token set: `- !`
 
@@ -81,7 +106,7 @@ Token set: `- !`
 !true
 ```
 
-##### Operator infix
+### Operator infix
 
 Token set: `+ - * / == != < >`
 
@@ -96,7 +121,7 @@ foo <  bar
 foo >  bar
 ```
 
-##### Operator parentheses
+### Operator parentheses
 
 Token set: `( )`
 
@@ -105,7 +130,7 @@ Token set: `( )`
 ((5 + 5) * 5) * 5
 ```
 
-##### If expression
+### If expression
 
 Patten: `if (<condition>) <consequence> else <alternative>`
 
@@ -115,7 +140,7 @@ let result = if (10 > 5) { true } else { false };
 ```
 
 
-##### Function literal
+### Function literal
 
 Pattern: `fn <parameters> <block statement>`
 
@@ -126,7 +151,7 @@ fn(x, y) { return x + y }
 let add = fn(x, y) { return x + y }
 ```
 
-##### Function call
+### Function call
 
 Pattern: `<expression>(<comma separated expressions>)`
 
@@ -134,7 +159,7 @@ Pattern: `<expression>(<comma separated expressions>)`
 multiply(5, add(5, 5))
 ```
 
-#### Parsing
+### Parsing
 
 Pratt Parsing, first decribed by Vaughan Pratt in the 1973 paper "Top down
 operator precedence", as an alternative parsers based on CFG
